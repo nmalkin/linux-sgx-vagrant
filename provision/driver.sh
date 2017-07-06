@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -ex
+
+BASE=/tmp/sgxsetup
+
+cd $BASE
+git clone https://github.com/01org/linux-sgx-driver.git
+
+cd $BASE/linux-sgx-driver
+make
+
+sudo mkdir -p "/lib/modules/"`uname -r`"/kernel/drivers/intel/sgx"
+sudo cp isgx.ko "/lib/modules/"`uname -r`"/kernel/drivers/intel/sgx"
+sudo sh -c "cat /etc/modules | grep -Fxq isgx || echo isgx >> /etc/modules"
+sudo /sbin/depmod
+sudo /sbin/modprobe isgx
