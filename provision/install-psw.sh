@@ -7,18 +7,11 @@ BASE=/tmp/sgxsetup
 # To use Trusted Platform Service functions:
 # Ensure mei_me driver is enabled and /dev/mei0 exists.
 cd /vagrant/provision
-INSTALLER=iclsClient-1.45.449.12-1.x86_64.rpm
-if [ -f $INSTALLER ]; then
-    apt-get install alien
-    alien --scripts $INSTALLER
-    dpkg -i iclsclient_1.45.449.12-2_amd64.deb
-    rm iclsclient_1.45.449.12-2_amd64.deb
-else
-    echo "WARNING: iclsClient client installer ($INSTALLER) missing."
-    echo "Download it from https://software.intel.com/en-us/sgx-sdk/download and put it in the provision/ directory"
-    echo "Skipping this step for now"
-fi
-
+wget http://registrationcenter-download.intel.com/akdlm/irc_nas/11414/iclsClient-1.45.449.12-1.x86_64.rpm
+apt-get install -y alien
+alien --scripts iclsClient-1.45.449.12-1.x86_64.rpm
+dpkg -i iclsclient_1.45.449.12-2_amd64.deb
+rm iclsclient_1.45.449.12-2_amd64.deb
 
 # Download source code from dynamic-application-loader-host-interface project. In the source code folder, build and install the JHI service using the following commands:
 cd $BASE
