@@ -68,6 +68,10 @@ Vagrant.configure("2") do |config|
   #   apt-get install -y apache2
   # SHELL
 
+  config.vm.provision 'prepare',
+      type: :shell,
+      path: 'provision/prepare.sh',
+      privileged: true
   config.vm.provision 'prerequisites',
       type: :shell,
       path: 'provision/prerequisites.sh',
